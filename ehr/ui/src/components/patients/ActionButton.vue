@@ -123,4 +123,7 @@ export default defineComponent({
 .add-target {
 	@include icon("~@/assets/images/goal-add-target.svg", 20px);
 }
+.icon-download {
+	@include icon("~@/assets/images/personal-download.svg", 20px, 19px);
+}
 </style>

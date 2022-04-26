@@ -1,8 +1,11 @@
 <script lang="ts">
 import { PersonalCharacteristic } from "@/types/personal-characteristics";
 import { defineComponent, PropType } from "vue";
+import ActionButton from "@/components/patients/ActionButton.vue";
+
 
 export default defineComponent( {
+	components: { ActionButton },
 	// props: {
 	// 	data: {
 	// 		type: Array as PropType<PersonalCharacteristic[]>,
@@ -13,6 +16,7 @@ export default defineComponent( {
 		return{
 			tableData:[
 				{
+					id:0,
 					type: "Personal Pronouns",
 					performer: "John Doe",
 					method: "Self Reported",
@@ -20,15 +24,32 @@ export default defineComponent( {
 					detailedValue: ""
 				},
 				{
+					id:1,
 					type: "Observation Ethnicity",
 					performer: "John Doe",
 					method: "Self Reported",
 					value: "Hispanic or Latino",
-					detailedValue: "American Indian or Alaska Native"
+					detailedValue: "American Indian or Alaska Native",
+					derivedFrom:''
 				}
 			]
 		};
-	}
+	},
+		methods:{
+			remove(row:any) {
+				this.tableData=this.tableData.filter((elem)=>{
+					return elem.id!==row.id
+				})
+			},
+			download(row:any) {
+				let url = document.createElement("a");
+				url.setAttribute("href", row.derivedFrom);
+				document.body.appendChild(url);
+				url.click();
+				document.body.removeChild(url);
+
+			}
+		}
 });
 
 </script>
@@ -65,6 +86,26 @@ export default defineComponent( {
 				label="Detailed Value"
 				property="detailedValue"
 			/>
+			<el-table-column
+					label="Actions"
+
+			>
+				<template #default="scope">
+					<ActionButton
+							icon-class="icon-remove"
+							label="Remove"
+							@click="remove(scope.row)"
+
+					/>
+					<ActionButton
+							v-if="scope.row.derivedFrom"
+							label="Download"
+							icon-class="icon-download"
+							@click="download(scope.row)"
+
+					/>
+				</template>
+			</el-table-column>
 		</el-table>
 	</div>
 </template>
