@@ -32,7 +32,7 @@ export default {
 			@add-item="addDialogOpen = true"
 		/>
 		<PersonalCharacteristicsTable
-
+			v-if="data.length > 0"
 			:data="data"
 		/>
 		<Dialog
